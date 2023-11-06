@@ -90,4 +90,3 @@ for name, model in models.items():
     
     # Print average accuracy and standard deviation
     print(f"{name} Average Accuracy: {np.mean(scores):.4f}")
-    print(f"{name} Standard Deviation: {np.std(scores):.4f}")
