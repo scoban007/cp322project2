@@ -45,7 +45,7 @@ X_train_tfidf = tfidf_transformer.fit_transform(X_train_counts)
 # print(X_train_tfidf.shape)
 
 #Select samplesize 
-X, y = make_classification(n_samples=1000, n_features=20)
+X, y = make_classification(n_samples=2000, n_features=20)
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2)
 
 #Models with specific parameters 
