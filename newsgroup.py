@@ -12,6 +12,7 @@ from sklearn.tree import DecisionTreeClassifier
 from sklearn.svm import LinearSVC
 from sklearn.ensemble import AdaBoostClassifier, RandomForestClassifier
 from sklearn.preprocessing import StandardScaler
+from sklearn.model_selection import train_test_split, StratifiedKFold
 
 
 #Fetching dataset 
@@ -37,7 +38,6 @@ twenty_train = fetch_20newsgroups(subset='train', categories=categories, shuffle
 count_vect = CountVectorizer()
 X_train_counts = count_vect.fit_transform(twenty_train.data)
 # print(X_train_counts.shape)
-
 #print(count_vect.vocabulary_.get(u'algorithm'))
 
 tfidf_transformer = TfidfTransformer()
@@ -83,3 +83,26 @@ for name, model in models.items():
 
 # Training and predicting Random Forest...
 # Random Forest Accuracy: 0.925
+
+kfold = StratifiedKFold(n_splits=5, shuffle=True, random_state=42)
+# Perform k-fold cross-validation for each model
+for name, model in models.items():
+    print(f"Validating {name} using k-fold cross-validation...")
+
+    # Initialize accuracy scores list for each fold
+    accuracy_scores = []
+
+    for train_indices, test_indices in kfold.split(X_train_tfidf, twenty_train.target):
+        X_train_fold, X_test_fold = X_train_tfidf[train_indices], X_train_tfidf[test_indices]
+        y_train_fold, y_test_fold = twenty_train.target[train_indices], twenty_train.target[test_indices]
+
+        # Train and predict for each fold
+        model.fit(X_train_fold, y_train_fold)
+        y_pred = model.predict(X_test_fold)
+
+        acc = accuracy_score(y_test_fold, y_pred)
+        accuracy_scores.append(acc)
+
+    # Print average accuracy and standard deviation
+    print(f"{name} Average Accuracy: {np.mean(accuracy_scores):.4f}")
+    print(f"{name} Standard Deviation: {np.std(accuracy_scores):.4f}")

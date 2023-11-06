@@ -5,7 +5,8 @@ from sklearn.linear_model import LogisticRegression
 from sklearn.tree import DecisionTreeClassifier
 from sklearn.svm import LinearSVC
 from sklearn.ensemble import AdaBoostClassifier, RandomForestClassifier
-
+from sklearn.model_selection import cross_val_score, StratifiedKFold
+import numpy as np
 def data_fetch(path, label_map=None):
     texts = []
     labels = []
@@ -77,3 +78,16 @@ for name, model in models.items():
 # Training Random Forest...
 # Predicting with Random Forest...
 # Random Forest Accuracy: 0.8136
+
+kfold = StratifiedKFold(n_splits=5, shuffle=True, random_state=42)
+
+# Perform k-fold cross-validation for each model
+for name, model in models.items():
+    print(f"Validating {name} using k-fold cross-validation...")
+
+    # Perform cross-validation and get accuracy scores
+    scores = cross_val_score(model, X_train, train_label, cv=kfold, scoring='accuracy')
+    
+    # Print average accuracy and standard deviation
+    print(f"{name} Average Accuracy: {np.mean(scores):.4f}")
+    print(f"{name} Standard Deviation: {np.std(scores):.4f}")
