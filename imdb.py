@@ -31,9 +31,8 @@ test_text, test_label = data_fetch('imdb/aclImdb/test')
 print("Number of training samples:", len(train_text))
 print("Number of test samples:", len(test_text))
 
-
-vectorizer = CountVectorizer()
 print("Vectorizing...")
+vectorizer = CountVectorizer()
 X_train = vectorizer.fit_transform(train_text)
 X_test = vectorizer.transform(test_text)
 
@@ -50,8 +49,10 @@ models = {
 for name, model in models.items():
     print(f"Training {name}...")
     model.fit(X_train, train_label)
+
     print(f"Predicting with {name}...")
     y_pred = model.predict(X_test)
+
     acc = accuracy_score(test_label, y_pred)
     print(f"{name} Accuracy: {acc}")
 
