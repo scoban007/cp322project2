@@ -32,7 +32,7 @@ def data_fetch(path, label_map=None):
 
 def preprocessing(text):
     #Pre-processing dataset: use only lowercase and remove trailing white spaces, 
-    # removing common words like "the" "is" etc, 
+    # removing stop-words/common words like "the" "is" etc, 
     # removing puncuations, lemmatization - using root words? 
     
     #Initialize the NLTK stopwords and WordNet lemmatizer
