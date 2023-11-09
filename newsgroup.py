@@ -48,18 +48,17 @@ def main():
         "Random Forest": RandomForestClassifier()
     }
 
-
+    #Train, predict, and get score for each model
     for name, model in models.items():
 
         start_time = time.time()
 
         print(f"Training and predicting {name}...")
-
         model.fit(X_train, y_train)
-        #print(f"Predicting with {name}...")
         y_pred = model.predict(X_test)
-
+        
         end_time = time.time()
+
         elapsed_time = end_time - start_time
         acc = accuracy_score(y_test, y_pred)
 
@@ -67,15 +66,16 @@ def main():
         print(f"Elapsed Time: {elapsed_time: .3f} seconds.\n")
 
 
+    #Validation
     kfold = StratifiedKFold(n_splits=5, shuffle=True, random_state=42)
-    # Perform k-fold cross-validation for each model
+    #Perform k-fold cross-validation for each model
     for name, model in models.items():
 
         start_time = time.time()
 
         print(f"Validating {name} using k-fold cross-validation...")
 
-        # Initialize accuracy scores list for each fold
+        #Initialize accuracy scores list for each fold
         accuracy_scores = []
 
         for train_indices, test_indices in kfold.split(X_train_tfidf, twenty_train.target):
@@ -93,10 +93,11 @@ def main():
         end_time = time.time()
         elapsed_time = end_time - start_time
 
-        # Print average accuracy and standard deviation
+        #Print average accuracy and standard deviation
         print(f"{name} Average Accuracy: {np.mean(accuracy_scores):.4f}")
         print(f"Elapsed Time: {elapsed_time:.3f} seconds.\n")
 
+    #Results for reference:
     # Fetching data...
     # Training and predicting Logistic Regression...
     # Logistic Regression Accuracy: 0.9175    
